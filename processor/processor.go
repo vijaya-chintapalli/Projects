@@ -1,11 +1,12 @@
 package processor
-
 import (
 	"receipt-rule-engine-challenge/model"
 	"encoding/json"
+	"errors"
 	"fmt"
+	"strings"
+	"time"
 )
-
 // RuleProcessor A Rule-Based receipt processor
 type RuleProcessor interface {
 
