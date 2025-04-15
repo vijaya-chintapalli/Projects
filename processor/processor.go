@@ -1,74 +1,93 @@
 package processor
 
 import (
-    "receipt-rule-engine-challenge/model" 
-    "encoding/json"
-    "fmt"
-    "time"
-    "strings" 
+	"encoding/json"
+	"fmt"
+	"receipt-rule-engine-challenge/model"
 )
 
-// RuleProcessor A Rule-Based receipt processor
-type RuleProcessor interface {
-	// AddRule adds an arbitrary rule to the processor to be used in handling all subsequent receipts.
-	// ruleType refers to the RuleType constant classifying the rule.
-	// ruleDefinition is expected to be a JSON string that can be parsed into a rule of the indicated type.
-	AddRule(ruleType model.RuleType, ruleDefinition string) error
-
-	// Process evaluates a receipt against the available rules, and returns the number of points to award.
-	Process(receipt model.Receipt) (int, error)
-}
-
+// ruleProcessor is responsible for storing and processing rules
 type ruleProcessor struct {
-	rules map[model.RuleType]Rule
+	rules map[model.RuleType]model.Rule
 }
 
-func NewProcessor() RuleProcessor {
-	// Initialize processor
+// NewProcessor initializes a new rule processor
+func NewProcessor() *ruleProcessor {
 	return &ruleProcessor{
-		rules: make(map[model.RuleType]Rule),
+		rules: make(map[model.RuleType]model.Rule),
 	}
 }
 
+// AddRule adds a rule to the processor
 func (rp *ruleProcessor) AddRule(ruleType model.RuleType, ruleDefinition string) error {
-	var rule Rule
+	var rule model.Rule
+	var err error
+
 	// Use the constants directly here
 	switch ruleType {
-	case model.RetailerNameAlpha:
-		rule = &retailerNameAlphaRule{}
-	case model.TotalRoundDollar:
-		rule = &totalRoundDollarRule{}
-	case model.TotalMultipleOfQuarter:
-		rule = &totalMultipleOfQuarterRule{}
-	case model.ItemCountMultiplier:
-		rule = &itemCountMultiplierRule{}
-	case model.ItemDescriptionLength:
-		rule = &itemDescriptionLengthRule{}
-	case model.PurchaseDayOdd:
-		rule = &purchaseDayOddRule{}
-	case model.PurchaseTimeRange:
-		rule = &purchaseTimeRangeRule{}
+	case model.RuleTypeStoreName:
+		var retailerNameAlphaRule retailerNameAlphaRule
+		err = json.Unmarshal([]byte(ruleDefinition), &retailerNameAlphaRule)
+		if err == nil {
+			rule = &retailerNameAlphaRule
+		}
+	case model.RuleTypeItemMatch:
+		var totalRoundDollarRule totalRoundDollarRule
+		err = json.Unmarshal([]byte(ruleDefinition), &totalRoundDollarRule)
+		if err == nil {
+			rule = &totalRoundDollarRule
+		}
+	case model.RuleTypeRetailerNameAlpha:
+		var totalMultipleOfQuarterRule totalMultipleOfQuarterRule
+		err = json.Unmarshal([]byte(ruleDefinition), &totalMultipleOfQuarterRule)
+		if err == nil {
+			rule = &totalMultipleOfQuarterRule
+		}
+	case model.RuleTypeTotalRoundDollar:
+		var itemCountMultiplierRule itemCountMultiplierRule
+		err = json.Unmarshal([]byte(ruleDefinition), &itemCountMultiplierRule)
+		if err == nil {
+			rule = &itemCountMultiplierRule
+		}
+	case model.RuleTypeTotalMultipleOfQuarter:
+		var itemDescriptionLengthRule itemDescriptionLengthRule
+		err = json.Unmarshal([]byte(ruleDefinition), &itemDescriptionLengthRule)
+		if err == nil {
+			rule = &itemDescriptionLengthRule
+		}
+	case model.RuleTypeItemCountMultiplier:
+		var purchaseDayOddRule purchaseDayOddRule
+		err = json.Unmarshal([]byte(ruleDefinition), &purchaseDayOddRule)
+		if err == nil {
+			rule = &purchaseDayOddRule
+		}
+	case model.RuleTypeItemDescriptionLength:
+		var purchaseTimeRangeRule purchaseTimeRangeRule
+		err = json.Unmarshal([]byte(ruleDefinition), &purchaseTimeRangeRule)
+		if err == nil {
+			rule = &purchaseTimeRangeRule
+		}
 	default:
 		return fmt.Errorf("unsupported rule type: %v", ruleType)
 	}
 
-	// Unmarshal the rule definition (JSON string) into the corresponding rule struct
-	if err := json.Unmarshal([]byte(ruleDefinition), rule); err != nil {
-		return fmt.Errorf("failed to unmarshal rule definition: %w", err)
+	if err != nil {
+		return fmt.Errorf("failed to parse rule definition: %v", err)
 	}
 
-	// Add the rule to the map
 	rp.rules[ruleType] = rule
 	return nil
 }
 
+// Process applies all the rules to the receipt and returns the total points
 func (rp *ruleProcessor) Process(receipt model.Receipt) (int, error) {
 	totalPoints := 0
 
-	for ruleType, rule := range rp.rules {
+	// Iterate through each rule and apply it to the receipt
+	for _, rule := range rp.rules {
 		points, err := rule.Evaluate(receipt)
 		if err != nil {
-			return 0, fmt.Errorf("error evaluating rule %v: %w", ruleType, err)
+			return 0, fmt.Errorf("error evaluating rule: %v", err)
 		}
 		totalPoints += points
 	}
@@ -76,10 +95,7 @@ func (rp *ruleProcessor) Process(receipt model.Receipt) (int, error) {
 	return totalPoints, nil
 }
 
-type Rule interface {
-	Evaluate(receipt model.Receipt) (int, error)
-}
-
+// retailerNameAlphaRule checks if the retailer name consists of alphabetic characters
 type retailerNameAlphaRule struct {
 	PointsPerChar int `json:"pointsPerChar"`
 }
@@ -94,55 +110,57 @@ func (r *retailerNameAlphaRule) Evaluate(receipt model.Receipt) (int, error) {
 	return count * r.PointsPerChar, nil
 }
 
+// totalRoundDollarRule checks if the total is a round dollar value
 type totalRoundDollarRule struct {
 	Points int `json:"points"`
 }
 
 func (r *totalRoundDollarRule) Evaluate(receipt model.Receipt) (int, error) {
-	if receipt.Total == float64(int64(receipt.Total)) {
+	if receipt.Total == float64(int(receipt.Total)) {
 		return r.Points, nil
 	}
 	return 0, nil
 }
 
+// totalMultipleOfQuarterRule checks if the total is a multiple of 0.25
 type totalMultipleOfQuarterRule struct {
 	Points int `json:"points"`
 }
 
 func (r *totalMultipleOfQuarterRule) Evaluate(receipt model.Receipt) (int, error) {
-	if receipt.Total == 0 {
-		return 0, nil
-	}
-	if remainder := receipt.Total - float64(int64(receipt.Total/0.25))*0.25; remainder < 0.001 {
+	if float64(int(receipt.Total*4)) == receipt.Total*4 {
 		return r.Points, nil
 	}
 	return 0, nil
 }
 
+// itemCountMultiplierRule multiplies points by the number of items in the receipt
 type itemCountMultiplierRule struct {
-	Multiplier int `json:"multiplier"`
+	Multiplier float64 `json:"multiplier"`
 }
 
 func (r *itemCountMultiplierRule) Evaluate(receipt model.Receipt) (int, error) {
-	return len(receipt.Items) / 2 * r.Multiplier, nil
-}
-
-type itemDescriptionLengthRule struct {
-	RequiredLength int `json:"requiredLength"`
-	Points         int `json:"points"`
-}
-
-func (r *itemDescriptionLengthRule) Evaluate(receipt model.Receipt) (int, error) {
-	points := 0
-	for _, item := range receipt.Items {
-		trimmed := strings.TrimSpace(item.ID)
-		if len(trimmed)%r.RequiredLength == 0 {
-			points += r.Points
-		}
-	}
+	itemCount := len(receipt.Items)
+	points := int(float64(itemCount) * r.Multiplier)
 	return points, nil
 }
 
+// itemDescriptionLengthRule checks the length of the item descriptions
+type itemDescriptionLengthRule struct {
+	MaxLength int `json:"maxLength"`
+	Points    int `json:"points"`
+}
+
+func (r *itemDescriptionLengthRule) Evaluate(receipt model.Receipt) (int, error) {
+	for _, item := range receipt.Items {
+		if len(item.Description) > r.MaxLength {
+			return r.Points, nil
+		}
+	}
+	return 0, nil
+}
+
+// purchaseDayOddRule checks if the purchase day is odd
 type purchaseDayOddRule struct {
 	Points int `json:"points"`
 }
@@ -154,29 +172,15 @@ func (r *purchaseDayOddRule) Evaluate(receipt model.Receipt) (int, error) {
 	return 0, nil
 }
 
+// purchaseTimeRangeRule checks if the purchase time is within a specific range
 type purchaseTimeRangeRule struct {
-	Start  string `json:"start"`
-	End    string `json:"end"`
-	Points int    `json:"points"`
+	StartHour int `json:"startHour"`
+	EndHour   int `json:"endHour"`
+	Points    int `json:"points"`
 }
 
 func (r *purchaseTimeRangeRule) Evaluate(receipt model.Receipt) (int, error) {
-	purchaseTime := receipt.PurchaseTime
-	startTime, err := time.Parse("15:04", r.Start)
-	if err != nil {
-		return 0, fmt.Errorf("invalid start time format: %w", err)
-	}
-
-	endTime, err := time.Parse("15:04", r.End)
-	if err != nil {
-		return 0, fmt.Errorf("invalid end time format: %w", err)
-	}
-
-	pt := time.Date(0, 0, 0, purchaseTime.Hour(), purchaseTime.Minute(), 0, 0, time.UTC)
-	st := time.Date(0, 0, 0, startTime.Hour(), startTime.Minute(), 0, 0, time.UTC)
-	et := time.Date(0, 0, 0, endTime.Hour(), endTime.Minute(), 0, 0, time.UTC)
-
-	if pt.After(st) && pt.Before(et) {
+	if receipt.PurchaseTime.Hour() >= r.StartHour && receipt.PurchaseTime.Hour() <= r.EndHour {
 		return r.Points, nil
 	}
 	return 0, nil

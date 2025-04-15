@@ -1,8 +1,16 @@
 package model
 
-type RuleTypeStoreItem int
+// RuleType is an enumeration for rule types
+type RuleType int
 
 const (
-    RuleTypeStoreName RuleTypeStoreItem = iota + 1
-    RuleTypeItemMatch
+	RuleTypeStoreName RuleType = iota + 1
+	RuleTypeItemMatch
+	RuleTypeRetailerNameAlpha
+	RuleTypeTotalRoundDollar
+	RuleTypeTotalMultipleOfQuarter
+	RuleTypeItemCountMultiplier
+	RuleTypeItemDescriptionLength
+	RuleTypePurchaseDayOdd
+	RuleTypePurchaseTimeRange
 )
