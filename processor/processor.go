@@ -8,8 +8,8 @@ import (
 
 // ruleProcessor is responsible for storing and processing rules
 type ruleProcessor struct {
-	storeNameRules   []StoreNameRule
-	itemMatchRules   []ItemMatchRule
+	storeNameRules []StoreNameRule
+	itemMatchRules []ItemMatchRule
 }
 
 // NewProcessor initializes a new rule processor
@@ -50,18 +50,20 @@ func (rp *ruleProcessor) AddRule(ruleType model.RuleType, ruleDefinition string)
 func (rp *ruleProcessor) Process(receipt model.Receipt) (int, error) {
 	totalPoints := 0
 
-	// Apply StoreName Rules
+	// Apply StoreName Rules (Points for matching store name)
 	for _, rule := range rp.storeNameRules {
 		if receipt.StoreName == rule.Value {
 			totalPoints += rule.Points
 		}
 	}
 
-	// Apply ItemMatch Rules
+	// Apply ItemMatch Rules (Points for matching items and their rates)
 	for _, rule := range rp.itemMatchRules {
 		for _, item := range receipt.Items {
+			// Check if the item ID matches any of the defined IDs in the rule
 			if contains(rule.IDs, item.ID) {
-				totalPoints += int(float64(item.Price) * rule.Rate)
+				// Calculate points based on the price of the item and the rule rate
+				totalPoints += int(item.Price * rule.Rate)
 			}
 		}
 	}
@@ -71,14 +73,14 @@ func (rp *ruleProcessor) Process(receipt model.Receipt) (int, error) {
 
 // StoreNameRule checks if the retailer name matches and applies points
 type StoreNameRule struct {
-	Value  string `json:"value"`
-	Points int    `json:"points"`
+	Value  string `json:"value"`  // Store name to match
+	Points int    `json:"points"` // Points awarded if the store name matches
 }
 
 // ItemMatchRule applies a multiplier for specific items
 type ItemMatchRule struct {
-	IDs   []string `json:"ids"`
-	Rate float64   `json:"rate"`
+	IDs   []string `json:"ids"`   // List of item IDs to match
+	Rate float64   `json:"rate"`  // Multiplier rate for the matched items
 }
 
 // Helper function to check if an item ID exists in a slice

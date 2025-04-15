@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites tests="2" failures="2" errors="0" time="0.690530">
-	<testsuite tests="0" failures="0" time="0.000000" name="github.com/vijaya-chintapalli/Projects" timestamp="2025-04-15T01:41:36Z">
+<testsuites tests="1" failures="1" errors="0" time="0.697191">
+	<testsuite tests="0" failures="0" time="0.000000" name="github.com/vijaya-chintapalli/Projects" timestamp="2025-04-15T02:20:42Z">
 		<properties>
 			<property name="go.version" value="go1.23.3 linux/amd64"></property>
 		</properties>
 	</testsuite>
-	<testsuite tests="0" failures="0" time="0.000000" name="github.com/vijaya-chintapalli/Projects/model" timestamp="2025-04-15T01:41:36Z">
+	<testsuite tests="0" failures="0" time="0.000000" name="github.com/vijaya-chintapalli/Projects/model" timestamp="2025-04-15T02:20:42Z">
 		<properties>
 			<property name="go.version" value="go1.23.3 linux/amd64"></property>
 		</properties>
 	</testsuite>
-	<testsuite tests="2" failures="2" time="0.006000" name="github.com/vijaya-chintapalli/Projects/processor" timestamp="2025-04-15T01:41:36Z">
+	<testsuite tests="1" failures="1" time="0.006000" name="github.com/vijaya-chintapalli/Projects/processor" timestamp="2025-04-15T02:20:42Z">
 		<properties>
 			<property name="go.version" value="go1.23.3 linux/amd64"></property>
 		</properties>
-		<testcase classname="github.com/vijaya-chintapalli/Projects/processor" name="TestProcessor/example" time="0.000000">
-			<failure message="Failed" type="">=== RUN   TestProcessor/example&#xA;Processed Points: 0&#xA;    processor_test.go:37: &#xA;        &#x9;Error Trace:&#x9;/projects/challenge/processor/processor_test.go:37&#xA;        &#x9;Error:      &#x9;Not equal: &#xA;        &#x9;            &#x9;expected: 1325&#xA;        &#x9;            &#x9;actual  : 0&#xA;        &#x9;Test:       &#x9;TestProcessor/example&#xA;--- FAIL: TestProcessor/example (0.00s)&#xA;</failure>
-		</testcase>
 		<testcase classname="github.com/vijaya-chintapalli/Projects/processor" name="TestProcessor" time="0.000000">
-			<failure message="Failed" type="">=== RUN   TestProcessor&#xA;--- FAIL: TestProcessor (0.00s)&#xA;</failure>
+			<failure message="Failed" type="">=== RUN   TestProcessor&#xA;    processor_test.go:38: &#xA;        &#x9;Error Trace:&#x9;/projects/challenge/processor/processor_test.go:38&#xA;        &#x9;Error:      &#x9;Not equal: &#xA;        &#x9;            &#x9;expected: 1325&#xA;        &#x9;            &#x9;actual  : 101&#xA;        &#x9;Test:       &#x9;TestProcessor&#xA;--- FAIL: TestProcessor (0.00s)&#xA;</failure>
 		</testcase>
 	</testsuite>
 </testsuites>
