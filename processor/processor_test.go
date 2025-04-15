@@ -33,6 +33,6 @@ func TestProcessor(t *testing.T) {
 	points, err := p.Process(receipt)
 	require.NoError(t, err)
 
-	// Expected points: 100 points from the store name + 1.225 points from item match rule (12.25 * 0.1)
+	// Expected points: 100 points from the store match, and 1.225 points from the item match rule (12.25 * 0.1)
 	require.Equal(t, 101, points)
 }
