@@ -1,6 +1,6 @@
 package model
 
-// Rule defines a generic interface that any rule should implement
+// Rule interface represents a rule that can be evaluated on a receipt
 type Rule interface {
-	Evaluate(receipt Receipt) (int, error)
+    Evaluate(receipt Receipt) (int, error)
 }

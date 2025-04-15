@@ -1,8 +1,5 @@
 package model
-
-// RuleType is an enumeration for rule types
 type RuleType int
-
 const (
 	RuleTypeStoreName RuleType = iota + 1
 	RuleTypeItemMatch

@@ -1,16 +1,14 @@
 package main
 
 import (
-    "github.com/vijaya-chintapalli/Projects/model"
- // Ensure that model is properly imported
     "fmt"
+    "github.com/vijaya-chintapalli/Projects/model"  // Correctly importing the model package
 )
 
 func main() {
-    // Example of creating an Item and a Receipt
     item := model.Item{
-        ID:    "123",
-        Price: 10.50,
+        Name:        "Example Item",
+        Description: "An example description",
     }
     fmt.Println(item)
 }

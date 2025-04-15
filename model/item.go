@@ -1,8 +1,10 @@
+// model/item.go
 package model
 
-// Item represents an individual item in the receipt.
+// Item struct is defined once in the model package
 type Item struct {
-    ID          string  `json:"id"`          // Item ID
-    Description string  `json:"description"` // Item description (if needed for length checks or other logic)
-    Price       float64 `json:"price"`       // Item price
+    ID          string
+    Name        string
+    Description string
+    Price       float64
 }
