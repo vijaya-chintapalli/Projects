@@ -3,7 +3,8 @@ package processor
 import (
 	"encoding/json"
 	"fmt"
-	"receipt-rule-engine-challenge/model"
+	"github.com/vijaya-chintapalli/Projects/model"
+
 )
 
 // ruleProcessor is responsible for storing and processing rules

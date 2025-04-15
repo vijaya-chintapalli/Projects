@@ -1,7 +1,8 @@
 package main
 
 import (
-    "receipt-rule-engine-challenge/model" // Ensure that model is properly imported
+    "github.com/vijaya-chintapalli/Projects/model"
+ // Ensure that model is properly imported
     "fmt"
 )
 

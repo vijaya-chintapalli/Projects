@@ -3,7 +3,7 @@ package processor
 import (
     "testing"
     "github.com/stretchr/testify/require"
-    "github.com/vijaya-chintapalli/challenge/model" 
+    "github.com/vijaya-chintapalli/Projects/model"
     "github.com/google/uuid"
     "fmt"
     "time"
