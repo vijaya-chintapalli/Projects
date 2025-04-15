@@ -3,6 +3,11 @@ package model
 type RuleType int
 
 const (
-	RuleTypeStoreName RuleType = iota + 1
-	RuleTypeItemMatch
+	RetailerNameAlpha RuleType = iota + 1
+	TotalRoundDollar
+	TotalMultipleOfQuarter
+	ItemCountMultiplier
+	ItemDescriptionLength
+	PurchaseDayOdd
+	PurchaseTimeRange
 )

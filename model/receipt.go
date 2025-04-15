@@ -34,14 +34,12 @@ func ParseReceipt(data []byte) (*Receipt, error) {
 	}
 	return &receipt, nil
 }
-func ParsePurchaseTime(timeStr string) (time.Time, error) 
-	return time.Parse("2006-01-02 15:04:05", timeStr)
+func ParsePurchaseTime(timeStr string) (time.Time, error) {
+    return time.Parse("2006-01-02 15:04:05", timeStr)
 }
-
 func SerializeReceipt(receipt *Receipt) ([]byte, error) {
 	return json.Marshal(receipt)
 }
-
 func SerializeItem(item *Item) ([]byte, error) {
 	return json.Marshal(item)
 }

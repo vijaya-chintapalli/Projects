@@ -1,16 +1,8 @@
 package model
 
-type RuleType string
+type RuleTypeStoreItem int
 
 const (
-    RetailerNameAlpha       RuleType = "RetailerNameAlpha"
-    TotalRoundDollar        RuleType = "TotalRoundDollar"
-    TotalMultipleOfQuarter  RuleType = "TotalMultipleOfQuarter"
-    ItemCountMultiplier     RuleType = "ItemCountMultiplier"
-    TotalRoundDollar        RuleType = "TotalRoundDollar"
-    TotalMultipleOfQuarter  RuleType = "TotalMultipleOfQuarter"
-    ItemCountMultiplier     RuleType = "ItemCountMultiplier"
-    ItemDescriptionLength   RuleType = "ItemDescriptionLength"
-    PurchaseDayOdd          RuleType = "PurchaseDayOdd"
-    PurchaseTimeRange       RuleType = "PurchaseTimeRange"
+    RuleTypeStoreName RuleTypeStoreItem = iota + 1
+    RuleTypeItemMatch
 )
