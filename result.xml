@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites tests="1" failures="0" errors="0" time="0.686482">
-	<testsuite tests="0" failures="0" time="0.000000" name="github.com/vijaya-chintapalli/Projects" timestamp="2025-04-15T02:25:08Z">
+<testsuites tests="1" failures="0" errors="0" time="0.319251">
+	<testsuite tests="0" failures="0" time="0.000000" name="github.com/vijaya-chintapalli/Projects" timestamp="2025-04-15T02:25:23Z">
 		<properties>
 			<property name="go.version" value="go1.23.3 linux/amd64"></property>
 		</properties>
 	</testsuite>
-	<testsuite tests="0" failures="0" time="0.000000" name="github.com/vijaya-chintapalli/Projects/model" timestamp="2025-04-15T02:25:08Z">
+	<testsuite tests="0" failures="0" time="0.000000" name="github.com/vijaya-chintapalli/Projects/model" timestamp="2025-04-15T02:25:23Z">
 		<properties>
 			<property name="go.version" value="go1.23.3 linux/amd64"></property>
 		</properties>
 	</testsuite>
-	<testsuite tests="1" failures="0" time="0.006000" name="github.com/vijaya-chintapalli/Projects/processor" timestamp="2025-04-15T02:25:08Z">
+	<testsuite tests="1" failures="0" time="0.000000" name="github.com/vijaya-chintapalli/Projects/processor" timestamp="2025-04-15T02:25:23Z">
 		<properties>
 			<property name="go.version" value="go1.23.3 linux/amd64"></property>
 		</properties>
